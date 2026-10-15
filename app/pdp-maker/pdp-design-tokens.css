@@ -1,0 +1,160 @@
+/* 상세페이지 마법사 3.1 — UI 역할·컴포넌트 토큰
+   층위: app/brand-tokens.css(원시 브랜드) → 이 파일(역할 → 컴포넌트).
+   - 이름은 모두 --pdp- 접두어. 이 파일은 변수만 정의하고 기존 셀렉터를 바꾸지 않는다.
+   - 앱 화면 전용이다. 사용자가 생성하는 상품 상세페이지(캔버스·내보내기)에는 쓰지 않는다.
+   - 브랜드 파생색은 color-mix로 계산한다. 직접 hex는 기능 상태색(성공·주의·오류)에만 쓴다.
+   기준 문서: docs/PDP-MAKER-3.1-DESIGN-HANDOFF.md §7–8, docs/superpowers/specs/2026-10-05-hanirum-brand-architecture-design.md */
+
+:root {
+  /* ── 표면 ─────────────────────────────── */
+  --pdp-surface-page: var(--hi-paper);
+  --pdp-surface-raised: color-mix(in srgb, var(--hi-paper) 30%, #fff);
+  --pdp-surface-sunken: color-mix(in srgb, var(--hi-paper) 82%, var(--hi-gray-300));
+  --pdp-surface-inverse: var(--hi-ink);
+  --pdp-scrim: color-mix(in srgb, var(--hi-ink) 48%, transparent);
+
+  /* ── 글자 ─────────────────────────────── */
+  --pdp-text-primary: var(--hi-ink);
+  --pdp-text-secondary: var(--hi-gray-700);
+  /* 보조 정보 전용. 핵심 안내·오류에는 쓰지 않는다 */
+  --pdp-text-tertiary: color-mix(in srgb, var(--hi-gray-700) 80%, var(--hi-paper));
+  --pdp-text-inverse: var(--hi-paper);
+
+  /* ── 선 ───────────────────────────────── */
+  --pdp-border: var(--hi-gray-300);
+  --pdp-border-strong: color-mix(in srgb, var(--hi-gray-300) 60%, var(--hi-gray-700));
+  --pdp-border-dashed: color-mix(in srgb, var(--hi-gray-300) 70%, var(--hi-gray-700));
+  --pdp-focus-ring: 0 0 0 3px color-mix(in srgb, var(--hi-brand-wizard) 32%, transparent);
+
+  /* ── 주요 행동 (마법사 시리즈 Wizard Navy) ── */
+  --pdp-action-bg: var(--hi-brand-wizard);
+  --pdp-action-bg-hover: color-mix(in srgb, var(--hi-brand-wizard) 84%, var(--hi-ink));
+  --pdp-action-bg-pressed: color-mix(in srgb, var(--hi-brand-wizard) 70%, var(--hi-ink));
+  --pdp-action-fg: var(--hi-paper);
+  --pdp-action-soft: color-mix(in srgb, var(--hi-brand-wizard) 9%, var(--hi-paper));
+  --pdp-action-soft-border: color-mix(in srgb, var(--hi-brand-wizard) 30%, var(--hi-paper));
+  --pdp-action-disabled-bg: var(--hi-gray-300);
+  --pdp-action-disabled-fg: var(--hi-gray-700);
+
+  /* 보조 행동 */
+  --pdp-secondary-bg: var(--pdp-surface-raised);
+  --pdp-secondary-bg-hover: #fff;
+  --pdp-secondary-fg: var(--hi-ink);
+  --pdp-secondary-border: var(--pdp-border-strong);
+
+  /* ── 기능 상태색: 의미별로 분리. 같은 녹색을 연결·저장·품질통과에 겸용하지 않는다 ── */
+  --pdp-success-fg: #1e6b45;
+  --pdp-success-bg: #e5f1e9;
+  --pdp-success-border: #a9cdb6;
+  --pdp-warning-fg: #8a5a00;
+  --pdp-warning-bg: #fbf0d9;
+  --pdp-warning-border: #e6c37a;
+  --pdp-danger-fg: #a8281e;
+  --pdp-danger-bg: #fbe7e4;
+  --pdp-danger-border: #ebb0a8;
+  --pdp-info-fg: var(--hi-brand-wizard);
+  --pdp-info-bg: var(--pdp-action-soft);
+  --pdp-info-border: var(--pdp-action-soft-border);
+  --pdp-neutral-fg: var(--hi-gray-700);
+  --pdp-neutral-bg: var(--pdp-surface-sunken);
+  --pdp-neutral-border: var(--hi-gray-300);
+
+  /* ── 구간(섹션) 상태 → 기능 상태 매핑. 색만으로 구분하지 않고 항상 글자·아이콘을 함께 쓴다 ── */
+  --pdp-state-empty: var(--pdp-neutral-fg);        /* 미생성 */
+  --pdp-state-queued: var(--pdp-neutral-fg);       /* 대기 */
+  --pdp-state-running: var(--pdp-info-fg);         /* 생성 중 */
+  --pdp-state-received: var(--pdp-success-fg);     /* 수신 완료 */
+  --pdp-state-failed: var(--pdp-danger-fg);        /* 실패 */
+  --pdp-state-unknown: var(--pdp-warning-fg);      /* 응답 확인 필요 (점선 테두리로 실패와 구분) */
+  --pdp-state-copy-stale: var(--pdp-warning-fg);   /* 문구 변경 · 이미지는 이전 문구 */
+  --pdp-check-passed: var(--pdp-success-fg);       /* AI 검사 통과 */
+  --pdp-check-review: var(--pdp-warning-fg);       /* 확인 필요 */
+  --pdp-check-unavailable: var(--pdp-neutral-fg);  /* 검사 불가 — 통과로 표시하지 않는다 */
+
+  /* ── 서체 ─────────────────────────────── */
+  --pdp-font-sans: var(--hi-font-sans);
+  --pdp-font-mono: var(--hi-font-mono); /* 숫자·보조 라벨에 제한적으로 */
+  --pdp-text-2xs: 11px;
+  --pdp-text-xs: 12px;
+  --pdp-text-sm: 13px;
+  --pdp-text-base: 14px;
+  --pdp-text-md: 16px;
+  --pdp-text-lg: 18px;
+  --pdp-text-xl: 22px;
+  --pdp-text-2xl: 28px;
+  --pdp-text-display: clamp(28px, 2.4vw, 46px);
+  --pdp-leading-tight: 1.25;
+  --pdp-leading-body: 1.55;
+  --pdp-weight-regular: 500;
+  --pdp-weight-strong: 650;
+  --pdp-weight-heavy: 800;
+  --pdp-tracking-tight: -0.02em;
+
+  /* ── 간격 (4/8 단위) ──────────────────── */
+  --pdp-space-1: 4px;
+  --pdp-space-2: 8px;
+  --pdp-space-3: 12px;
+  --pdp-space-4: 16px;
+  --pdp-space-5: 20px;
+  --pdp-space-6: 24px;
+  --pdp-space-8: 32px;
+  --pdp-space-10: 40px;
+  --pdp-space-12: 48px;
+
+  /* ── 모서리·그림자 (제한된 규격) ───────── */
+  --pdp-radius-sm: 6px;
+  --pdp-radius-md: 10px;
+  --pdp-radius-lg: 14px;
+  --pdp-radius-pill: 999px;
+  --pdp-shadow-sm: 0 1px 2px color-mix(in srgb, var(--hi-ink) 8%, transparent);
+  --pdp-shadow-md: 0 18px 40px -24px color-mix(in srgb, var(--hi-ink) 30%, transparent);
+  --pdp-shadow-overlay: 0 30px 60px -20px color-mix(in srgb, var(--hi-ink) 38%, transparent);
+
+  /* ── 움직임 ───────────────────────────── */
+  --pdp-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --pdp-duration-fast: 150ms;
+  --pdp-duration: 220ms;
+  --pdp-duration-slow: 360ms;
+
+  /* ── 레이아웃 ─────────────────────────── */
+  --pdp-topbar-height: 56px;
+  /* 시작·설정 화면의 가운데 칼럼. 사용처에서 width: min(100%, var(--pdp-start-column)) 로 쓴다 */
+  --pdp-start-column: clamp(680px, 44vw, 980px);
+  --pdp-setup-column: clamp(720px, 56vw, 1120px);
+  --pdp-editor-rail: 264px;
+  --pdp-editor-inspector: 360px;
+  --pdp-touch-target: 44px;
+
+  /* ── 컴포넌트 ─────────────────────────── */
+  --pdp-button-height: 40px;
+  --pdp-button-height-lg: 48px;
+  --pdp-button-radius: var(--pdp-radius-md);
+  --pdp-input-height: 44px;
+  --pdp-input-radius: var(--pdp-radius-md);
+  --pdp-badge-height: 22px;
+  --pdp-badge-radius: var(--pdp-radius-sm);
+  --pdp-card-padding: var(--pdp-space-4);
+  --pdp-card-radius: var(--pdp-radius-lg);
+  --pdp-dropzone-radius: var(--pdp-radius-lg);
+  --pdp-sheet-width: min(92vw, 540px);
+  --pdp-z-sticky: 10;
+  --pdp-z-dropdown: 40;
+  --pdp-z-sheet: 80;
+  --pdp-z-modal: 100;
+  --pdp-z-toast: 120;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --pdp-button-height: 44px;
+    --pdp-topbar-height: 52px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --pdp-duration-fast: 0ms;
+    --pdp-duration: 0ms;
+    --pdp-duration-slow: 0ms;
+  }
+}

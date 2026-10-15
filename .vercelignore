@@ -1,0 +1,12 @@
+.next*
+node_modules
+.vercel
+*.tsbuildinfo
+coverage
+dist
+.env
+.env.*
+archive
+backups
+output
+logs

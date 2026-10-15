@@ -1,0 +1,11 @@
+.vercel
+.env
+.env.*
+.next
+node_modules
+output
+test-results
+.playwright-cli
+.playwright-mcp
+*.tsbuildinfo
+.DS_Store

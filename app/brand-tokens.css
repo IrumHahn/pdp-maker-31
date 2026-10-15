@@ -1,0 +1,63 @@
+/* 버전: v=1 — 수정 시 페이지의 ?v= 값을 올릴 것 (/assets/* 는 immutable 캐시) */
+/* 한이룸 마스터 브랜드 토큰 — 진실의 원천.
+   하위 브랜드 프로젝트는 이 파일을 import하고 --brand-accent 만 덮어쓴다.
+   스펙: pdp-maker-30/docs/superpowers/specs/2026-10-05-hanirum-brand-architecture-design.md */
+:root {
+  /* 서체 */
+  --hi-font-sans: "Pretendard", "Pretendard Variable", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  --hi-font-mono: "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+
+  /* 중성색 */
+  --hi-ink: #080807;
+  --hi-paper: #f4efe6;
+  --hi-gray-700: #3a3936;
+  --hi-gray-300: #c9c4b8;
+
+  /* 하위 브랜드 고유색 */
+  --hi-brand-academy: #f15a24; /* 실행학교 Action Orange */
+  --hi-brand-youtube: #047857; /* 인공지능 한이룸 유튜브 Signal Green */
+  --hi-brand-letter: #d7b56d;  /* 이룸회보 Letter Gold */
+  --hi-brand-wizard: #173247;  /* 마법사 시리즈 Wizard Navy */
+
+  /* 현재 프로젝트의 고유색. 하위 브랜드가 덮어쓴다. 마스터 기본값은 Ink. */
+  --brand-accent: var(--hi-ink);
+  --brand-accent-ink: var(--hi-paper); /* accent 위에 올리는 글자색 */
+
+  /* 마크 규격 */
+  --hi-mark-clearspace: 0.25em; /* 마크 높이의 1/4 */
+  --hi-mark-min-size: 24px;
+}
+
+/* 스퀘어 마크: <span class="hi-mark" style="--mark-size:36px">마</span> */
+.hi-mark {
+  --mark-size: 36px;
+  --hi-mark-radius: calc(var(--mark-size) / 8); /* 마크 높이의 1/8 */
+  display: inline-grid;
+  place-items: center;
+  width: var(--mark-size);
+  height: var(--mark-size);
+  min-width: var(--hi-mark-min-size);
+  min-height: var(--hi-mark-min-size);
+  border-radius: var(--hi-mark-radius);
+  background: var(--brand-accent);
+  color: var(--brand-accent-ink);
+  font-family: var(--hi-font-sans);
+  font-size: calc(var(--mark-size) * 0.5);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  flex: 0 0 auto;
+}
+
+/* 보증 워드마크: <span class="hi-endorsement">by 한이룸</span>
+   Ink 또는 Paper 단색만 허용. 색은 부모의 color를 상속한다. */
+.hi-endorsement {
+  display: inline-block;
+  font-family: var(--hi-font-sans);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0.72;
+}
